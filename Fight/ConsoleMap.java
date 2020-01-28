@@ -10,6 +10,7 @@ public class ConsoleMap {
 class Dungeon {
   static int [] [] [] CurrentDungeon = new int [6][6][2];
   /*How does this work? CurrentDungeon is a 3 dimensional array. The first 2 dimensions are coordinates, the last dimension is actually used to store room attributes. CurrentDungeon[0] stores whether it is cleared or not, CurrentDungeon[1] stores if it is in or not. CurrentDungeon[2] stores room type(not currently implemented) */
+
   static void RoomUpdate() {
     //Needed?
   }
@@ -32,7 +33,7 @@ class Dungeon {
     System.out.println("          {s} Down");
     String result = input.nextLine();
     boolean CanGo;
-    int CurrentDungeon[] = getCurrentDungeon();
+    int CurrentDungeon[] = getCurrentRoom();
     switch (result) {
       
       case "w":
@@ -62,7 +63,7 @@ class Dungeon {
     ApplyRoomType();
   }
   static void ApplyRoomType() {
-    int [] CR = getCurrentDungeon();
+    int [] CR = getCurrentRoom();
     Random random = new Random();
     switch (Room.Rooms[CR[0]][CR[1]]) {
       case 1:
@@ -96,20 +97,22 @@ class Dungeon {
     for (int i = 0; i < CurrentDungeon.length; i++) {
       for (int j = 0; j < CurrentDungeon[i].length; j++) {
           
-          CurrentDungeon[i][j] = new int [] {0, 0};
+          CurrentDungeon[i][j][1] = 0;
+          //Set CurrentDungeon room to not in
       
       }
     }
     // if the room is good, make sure to go to room
-    CurrentDungeon[x][y] = new int [] {0, 1};
+    CurrentDungeon[x][y][1] = 1;
+    //You are in current room
     return true;
   }
-  public static int[] getCurrentDungeon() {
+  public static int[] getCurrentRoom() {
 
     int[] XandY= new int[2];
     for (int i = 0; i < CurrentDungeon.length; i++) {
       for (int j = 0; j < CurrentDungeon[i].length; j++) {
-        if (CurrentDungeon[i][j][0] == 1 || CurrentDungeon[i][j][1] == 1) {
+        if (CurrentDungeon[i][j][1] == 1) {
           XandY[0] = i;
           XandY[1] = j;
   //Note: if there are somehow two rooms with 1 as the value, then it will return the 1st room and not the second    
@@ -124,7 +127,7 @@ class Dungeon {
   }
   public static void setStartRoom() {
     Random random = new Random();
-    CurrentDungeon[random.nextInt(6)][random.nextInt(6)] = new int [] {0, 1};
+    CurrentDungeon[random.nextInt(6)][random.nextInt(6)][1] = 1;
   }  
   public static void setStartRoom(int x, int y) {
     CurrentDungeon[x][y][1] = 1;
@@ -209,7 +212,7 @@ class Room extends Dungeon{
         color = setRoomColor(C, x, y);
         if (C[x][y] >= 1) {
           Color.Text("_", color, color, 1);
-          int [] CurrentDungeon = getCurrentDungeon();
+          int [] CurrentDungeon = getCurrentRoom();
           if (CurrentDungeon[0] == x && CurrentDungeon[1] == y){
             System.out.print("    x   "); 
           } else {

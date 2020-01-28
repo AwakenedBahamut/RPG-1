@@ -8,14 +8,40 @@ public class ConsoleMap {
 //major change
 }
 class Dungeon {
-  static int [] [] [] CurrentDungeon = new int [6][6][2];
+  static int [] [] [] CurrentDungeon = new int [6][6][3];
   /*How does this work? CurrentDungeon is a 3 dimensional array. The first 2 dimensions are coordinates, the last dimension is actually used to store room attributes. CurrentDungeon[0] stores whether it is cleared or not, CurrentDungeon[1] stores if it is in or not. CurrentDungeon[2] stores room type(not currently implemented) */
-
+  //####################################33
+  //The "Room" methods are not implememted yet for Dungeon class
+  static void createRooms (int times) {
+    Random random = new Random();
+    for (int i = 0; i < times; i++) {
+        roomExist();
+    }
+  }
+  static int createCoordinates () {
+    Random random = new Random();
+    return random.nextInt(6);
+// six because the max room of the map
+  }
+  static void roomExist () {
+    //checks the coordinates for the rooms
+      int x = createCoordinates();
+      int y = createCoordinates();
+      if (CurrentDungeon[y][x][2] >= 1) {
+        roomExist();
+      }
+      CurrentDungeon[y][x][2] = setRoomType();
+  }
+  static int setRoomType () {
+    Random random = new Random();
+    int[] roomTypes = { 1, 2, 3, 4, 5};
+    return roomTypes[random.nextInt(roomTypes.length)];
+  }
   static void RoomUpdate() {
     //Needed?
   }
   public static void DungeonDemo() {
-    Room.createRooms(25);
+    createRooms(25);
     while (true) {
     //Main.Clear();
     //Clear each time you print map?
@@ -65,10 +91,25 @@ class Dungeon {
   static void ApplyRoomType() {
     int [] CR = getCurrentRoom();
     Random random = new Random();
-    switch (Room.Rooms[CR[0]][CR[1]]) {
+    if (CurrentDungeon[CR[0]][CR[1]][0] == 1) {
+
+    } else {
+      switch (CurrentDungeon[CR[0]][CR[1]][2]) {
+        case 1:
+        EnemyEncounter.Encounter();
+        break;
+        case 3:
+        //Items.activate(ItemsTable[random.nextInt(ItemsTable.Collectables.length)]);
+        //supposed to give you an item
+        break;
+        default:
+
+      }
+    }
+    switch (CurrentDungeon[CR[0]][CR[1]][2]) {
       case 1:
       EnemyEncounter.Encounter();
-      Room.Rooms[CR[0]][CR[1]] = 2;
+      CurrentDungeon[CR[0]][CR[1]][0] = 1;
       break;
       case 3:
       //Items.activate(ItemsTable[random.nextInt(ItemsTable.Collectables.length)]);
@@ -82,8 +123,7 @@ class Dungeon {
     //Will return false if the room is not on the map
     System.out.println("You will go to room: " + x + " , " + y);
     try {
-      int [][] room = Room.getRooms();
-      if (room[x][y] == 0) {
+      if (CurrentDungeon[x][y][2] == 0) {
         System.out.println("YoU cAn'T gO tHeRe");
         return false;
       }
@@ -142,33 +182,6 @@ class Room extends Dungeon{
     this.X = X;
     this.Y = Y;
   }
-  static int[][] Rooms = new int[6][6];
-  //RoomTaken?
-  static void createRooms (int times) {
-    Random random = new Random();
-    for (int i = 0; i < times; i++) {
-        roomExist();
-    }
-  }
-  static int createCoordinates () {
-    Random random = new Random();
-    return random.nextInt(6);
-// six because the max room of the map
-  }
-  static void roomExist () {
-    //checks the coordinates for the rooms
-      int x = createCoordinates();
-      int y = createCoordinates();
-      if (Rooms[y][x] >= 1) {
-        roomExist();
-      }
-      Rooms[y][x] = setRoomType();
-  }
-  static int setRoomType () {
-    Random random = new Random();
-    int[] roomTypes = { 1, 2, 3, 4, 5};
-    return roomTypes[random.nextInt(roomTypes.length)];
-  }
   void ConsoleMap() {
 
     // also unused for now
@@ -177,20 +190,17 @@ class Room extends Dungeon{
   static void generateMap() {
     // unused for now: should return type char[][]
   }
-  public static int[][] getRooms () {
-    return Rooms;
-  }
   static void ShowMap () {
     //36 is the maximum amount of rooms for [6][6]
     // Throws non static context error
     //use this for now because cannot run method without
-    int C [][] = Rooms;
+    int C [][][] = Dungeon.CurrentDungeon;
     String color = "Blue";
 
     for (int x = 0; x < C.length; x++) {
       for (int y = 0; y < C[1].length; y++) {
         color = setRoomColor(C, x, y);
-        if (C[x][y] >= 1) {
+        if (C[x][y][2] >= 1) {
           Color.Text("+--------+", color, color, 1);
         } else {
           System.out.print("          ");
@@ -199,7 +209,7 @@ class Room extends Dungeon{
       System.out.println();
       for (int y = 0; y < C[1].length; y++) {
         color = setRoomColor(C, x, y);
-        if (C[x][y] >= 1) {
+        if (C[x][y][2] >= 1) {
           Color.Text("_", color, color, 1);
           System.out.print("        "); 
           Color.Text("_", color, color, 1);
@@ -210,7 +220,7 @@ class Room extends Dungeon{
       System.out.println();
       for (int y = 0; y < C[1].length; y++) {
         color = setRoomColor(C, x, y);
-        if (C[x][y] >= 1) {
+        if (C[x][y][2] >= 1) {
           Color.Text("_", color, color, 1);
           int [] CurrentDungeon = getCurrentRoom();
           if (CurrentDungeon[0] == x && CurrentDungeon[1] == y){
@@ -226,7 +236,7 @@ class Room extends Dungeon{
       System.out.println();
       for (int y = 0; y < C[1].length; y++) {
         color = setRoomColor(C, x, y);
-        if (C[x][y] >= 1) {
+        if (C[x][y][2] >= 1) {
           Color.Text("_", color, color, 1);
           System.out.print("        "); 
           Color.Text("_", color, color, 1);
@@ -237,7 +247,7 @@ class Room extends Dungeon{
       System.out.println();
       for (int y = 0; y < C[1].length; y++) {
         color = setRoomColor(C, x, y);
-        if (C[x][y] >= 1) {
+        if (C[x][y][2] >= 1) {
           Color.Text("+--------+", color, color, 1);
         } else {
           System.out.print("          ");
@@ -248,9 +258,9 @@ class Room extends Dungeon{
     }
 
   }
-  public static String setRoomColor(int C [][], int x, int y) {
+  public static String setRoomColor(int C [][][], int x, int y) {
       String color = "White";
-        switch(C[x][y]) {
+        switch(C[x][y][2]) {
           case 1:
           //System.out.println("Normal");
           color = "White";
@@ -295,5 +305,6 @@ public static void CheckRooms( int x, int y, char [][] C) {
             Color.Text("+---------+", "Red", "None", 1);
           }
             }
+//Honestly this method is not needed
 }
 }

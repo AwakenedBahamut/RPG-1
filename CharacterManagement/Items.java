@@ -48,6 +48,9 @@ class Collectables extends Items {
     Main.Player.attack += item.AttackUp;
     Main.Player.defence += item.DefenceUp;
     Main.Player.critChance += item.CritChanceUp;
+    System.out.println("Press enter to continue");
+    Scanner input = new Scanner(System.in);
+    input.nextLine();
   }
 }
 //proof that "extends" works

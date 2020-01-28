@@ -92,31 +92,20 @@ class Dungeon {
     int [] CR = getCurrentRoom();
     Random random = new Random();
     if (CurrentDungeon[CR[0]][CR[1]][0] == 1) {
-
+//Don't repeat room start
     } else {
       switch (CurrentDungeon[CR[0]][CR[1]][2]) {
         case 1:
         EnemyEncounter.Encounter();
+        CurrentDungeon[CR[0]][CR[1]][0] = 1;
         break;
         case 3:
-        //Items.activate(ItemsTable[random.nextInt(ItemsTable.Collectables.length)]);
-        //supposed to give you an item
+        Collectables.activate(ItemsTable.ItemArray[random.nextInt(ItemsTable.ItemArray.length)]);
+        //supposed to give you an item, and it works now. However, infinite items glitch
         break;
         default:
 
       }
-    }
-    switch (CurrentDungeon[CR[0]][CR[1]][2]) {
-      case 1:
-      EnemyEncounter.Encounter();
-      CurrentDungeon[CR[0]][CR[1]][0] = 1;
-      break;
-      case 3:
-      //Items.activate(ItemsTable[random.nextInt(ItemsTable.Collectables.length)]);
-      //supposed to give you an item
-      break;
-      default:
-
     }
   }
   public static boolean goToRoom(int x, int y) {

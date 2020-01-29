@@ -1,7 +1,7 @@
 public class Plot {
 static void MainMenu() {
   System.out.println("");
-}
+  }
 }
 class Menu {
   String name;

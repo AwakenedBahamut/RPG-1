@@ -9,7 +9,6 @@ Add items
  - numbered
  - give stat bonuses
 Current bug report:
- - the map does not finish each box correctly
 *******************************************************************************/
  import java.util.*;
 
@@ -23,6 +22,7 @@ public class Main
     Menu DOWO = new Menu ("Cool menu name", "Cool menu option");
     System.out.println(DOWO.getName());
     DOWO.displayName();
+    ActiveItem.Demo();
     Dungeon.DungeonDemo();
     Room OP = new Room(3, 3, 3);
     OP.ConsoleMap();
@@ -38,7 +38,7 @@ public class Main
       int R = random.nextInt(5);
     //int R = 4;
     if (x == 2) {
-      Shop.Buy(ItemsTable.MOM, -50);
+      Shop.Buy(ItemsTable.RPG, -50);
     }
     switch (R) {
       case 1:

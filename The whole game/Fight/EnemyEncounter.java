@@ -10,7 +10,9 @@ class EnemyEncounter {
   static Enemy2 EnemyEncounters [][] = {
     {EnemyTable.Teacher},
     {EnemyTable.Dip, EnemyTable.Dip},
-    {EnemyTable.Boi, EnemyTable.Dip}, 
-    {EnemyTable.Fly, EnemyTable.Fly, EnemyTable.Fly}
+    {EnemyTable.Boi, EnemyTable.Dip},
+    {EnemyTable.Fly, EnemyTable.Fly, EnemyTable.Fly} ,
+    {EnemyTable.Tank}
   };
+  
 }

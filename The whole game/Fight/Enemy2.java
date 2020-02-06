@@ -12,7 +12,7 @@ public class Enemy2
   String Lore;
   public static Scanner input = new Scanner(System.in);
   public static Random random = new Random();
-    Enemy2 (String currentName, int Ehealth, int Eattack, int EcritChance, int Edefence, String Lore)
+  Enemy2 (String currentName, int Ehealth, int Eattack, int EcritChance, int Edefence, String Lore)
   {
     this.currentName = currentName;
     this.Ehealth = Ehealth;
@@ -44,7 +44,6 @@ public class Enemy2
         case 1:
         Win = true;
         BattleOver = true;
-        Main.Player = Main.Base;
         break;
         case 2:
         Win = false;
@@ -62,7 +61,49 @@ public class Enemy2
     Enemy.Edefence = EnemyBaseDefence;
       // --------------------------------------------------- \\
   }
+  static double numCrit = 0;
+  static double addDmg = 0;
+  static double dmgMult = 1;
+  public static double getNumCrit() {
+    return numCrit;
+  }
+  public static void setNumCrit(double newCrit) {
+    numCrit = newCrit;
+  }
+  public static double getAddDmg() {
+    return addDmg;
+  }
+  public static void setAddDmg(double newAddDmg) {
+    addDmg = newAddDmg;
+  }
+  public static double getDmgMult() {
+    return dmgMult;
+  }
+  public static void setDmgMult(double newDmgMult) {
+    dmgMult = newDmgMult;
+  }
+  static void ApplyBuff() {
+    checkItems();
+    Main.Player.attack += getAddDmg();
+  }
+  static void DeBuff() {
+    Main.Player.attack -= getAddDmg();
+    setAddDmg(0);
+  }
+
+  static void checkItems() {
+    if (ItemsTable.itemsWithAbilities[0].collected = true) {
+      addDmg += ItemsTable.getHitDamage();
+    }
+    if (ItemsTable.itemsWithAbilities[1].collected = true) {
+      truePoison = true;
+    }
+  }
+  //Setters and getters for all the important variables regarding attack
+  static boolean truePoison = false;
 public static int prompt (Enemy2 Enemy) {
+  ApplyBuff();
+  //Apply any buff effects 
   Scanner input = new Scanner(System.in);
       System.out.println ("\t [ Action ] \n \t {1} [ Action ] \n \t {2} [ Check Stats ] \n \t {3} [ Run Away ]");
     int UserMove = input.nextInt ();
@@ -108,23 +149,31 @@ public static int prompt (Enemy2 Enemy) {
       System.out.println("Okie dokie, you ded");
       Main.Player.health = 0;
       Win = 2;
-      Shop.Buy(ItemsTable.OWO, 0);
       System.out.println("Wow! Your incredible!");
         break;
       }
+    DeBuff();
   return Win;
 } // end of prompt
   public static int Attack(Enemy2 Enemy) {
+    //Do poison damage
+    if (truePoison == true) {
+      Enemy.Ehealth -= ItemsTable.getDamage();
+    }
     Random random = new Random();
     int Crit = random.nextInt (100) + 1;
+    
     	if (Crit < Main.Player.critChance)
 	  {
 	    Enemy.Ehealth -= Main.Player.attack * 2 - Enemy.Edefence;
 	    System.out.println ("You landed a critical strike!");
+      numCrit++;
+      //Add one to the crits in a row
 	  }
 	else
 	  {
 	    Enemy.Ehealth -= Main.Player.attack - Enemy.Edefence;
+      numCrit = 0;
 	  };
 	int Ecrit = random.nextInt (100) + 1;
 	int EnemyDamage;
@@ -183,9 +232,6 @@ return 2;
       break;
     }
     }
-  }
-  public static void ApplyBuff(Items item) {
-
   }
   public static void Action() {
     System.out.println("What secondary action would you like?" + "\n" + "{1} \t Attack \n \t {2} Inventory \n \t {3} Go back");

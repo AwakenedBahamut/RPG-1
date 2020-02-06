@@ -7,6 +7,7 @@ public class EnemyTable {
     public static Enemy2 MissingYes = new Enemy2 ("MissingYes", 1000, 100, 15, 10, "ERROR 404" + " /n YOU CANNOT ESCAPE ME " + NamePicker.Name);
     public static Enemy2 Dip = new Enemy2 ("Dip", 10, 10, 10, 10, "Dap");
     public static Enemy2 Fly = new Enemy2 ("Fly", 20, 0, 0, 0, "Buzzz...");
+    public static Enemy2 Tank = new Enemy2("The Wall", 1000, 0, 0, 0, "Tank it up!");
     public static Enemy2 GetEnemy( Enemy2 enemy) {
       return enemy;
     }

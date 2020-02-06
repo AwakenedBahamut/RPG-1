@@ -21,38 +21,6 @@ public class Items{
 class Pickups extends Items {
 
 }
-class Collectables extends Items {
-  boolean collected = false;
-  String Name;
-  int HealthUp;
-  int AttackUp;
-  int DefenceUp;
-  int CritChanceUp;
-  String ability;
-  Collectables (String Name, int HealthUp, int AttackUp, int DefenceUp, int CritChanceUp, boolean collected) {
-    this.Name = Name;
-    this.HealthUp = HealthUp;
-    this.AttackUp = AttackUp;
-    this.DefenceUp = DefenceUp;
-    this.CritChanceUp = CritChanceUp;
-    this.collected = collected;
-  }
-  Collectables (String Name, String ability) {
-    this.Name = Name;
-    this.ability = ability;
-  }
-  static void activate(Collectables item) {
-    //Pretty much, GetItem
-    System.out.println(item.Name + " aquired!");
-    Main.Player.health += item.HealthUp;
-    Main.Player.attack += item.AttackUp;
-    Main.Player.defence += item.DefenceUp;
-    Main.Player.critChance += item.CritChanceUp;
-    System.out.println("Press enter to continue");
-    Scanner input = new Scanner(System.in);
-    input.nextLine();
-  }
-}
 //proof that "extends" works
 class Bounty extends Items{
   int provability;
@@ -128,7 +96,7 @@ class Shop extends Bounty {
         } else {
           coins -= cost;
           System.out.println(item.Name + " aquired!");
-          Collectables.activate(item);
+          ItemsTable.getItem(item);
         }
         break;
         case "2":

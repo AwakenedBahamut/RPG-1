@@ -9,9 +9,8 @@ public class ConsoleMap {
 }
 class Dungeon {
   static int [] [] [] CurrentDungeon = new int [6][6][3];
-  /*How does this work? CurrentDungeon is a 3 dimensional array. The first 2 dimensions are coordinates, the last dimension is actually used to store room attributes. CurrentDungeon[0] stores whether it is cleared or not, CurrentDungeon[1] stores if it is in or not. CurrentDungeon[2] stores room type(not currently implemented) */
-  //####################################33
-  //The "Room" methods are not implememted yet for Dungeon class
+  /*How does this work? CurrentDungeon is a 3 dimensional array. The first 2 dimensions are coordinates, the last dimension is actually used to store room attributes. CurrentDungeon[0] stores whether it is cleared or not, CurrentDungeon[1] stores if it is in or not. CurrentDungeon[2] stores room type */
+  //####################################
   static void createRooms (int times) {
     Random random = new Random();
     for (int i = 0; i < times; i++) {
@@ -34,7 +33,7 @@ class Dungeon {
   }
   static int setRoomType () {
     Random random = new Random();
-    int[] roomTypes = { 1, 2, 3, 4, 5};
+    int[] roomTypes = { 1, 3, 4, 5};
     return roomTypes[random.nextInt(roomTypes.length)];
   }
   static void RoomUpdate() {
@@ -57,6 +56,7 @@ class Dungeon {
     System.out.println("          {w}Up");
     System.out.println("    {a} Left  {d} Right");
     System.out.println("          {s} Down");
+    System.out.println(" {i} Inventory");
     String result = input.nextLine();
     boolean CanGo;
     int CurrentDungeon[] = getCurrentRoom();
@@ -78,6 +78,13 @@ class Dungeon {
       CanGo = goToRoom(CurrentDungeon[0], CurrentDungeon[1] + 1);
       break;
 
+      case "/tp":
+      CanGo = goToRoom(createCoordinates(), createCoordinates());
+      break;
+
+      case "i":
+      break;
+      
       default:
       System.out.println("Sorry, that is not a valid answer");
 
@@ -100,8 +107,12 @@ class Dungeon {
         CurrentDungeon[CR[0]][CR[1]][0] = 1;
         break;
         case 3:
-        Collectables.activate(ItemsTable.ItemArray[random.nextInt(ItemsTable.ItemArray.length)]);
+        ItemsTable.getRandomItem();
         //supposed to give you an item, and it works now. However, infinite items glitch
+        //Now infinite items patched as of 2/1/20
+        //Only gives you active items for now
+        //Make the following number 0 for infinite items
+        CurrentDungeon[CR[0]][CR[1]][0] = 1;
         break;
         default:
 

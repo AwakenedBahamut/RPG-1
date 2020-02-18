@@ -56,14 +56,86 @@ public class ItemsTable {
     
   };
   static ActiveItem Teleport = new ActiveItem("Teleport!", 2);
+  public static void Teleport () {
+    int Roomx = Dungeon.createCoordinates();
+    int Roomy = Dungeon.createCoordinates();
+    int [] CurrentRoom = Dungeon.getCurrentRoom();
+    if (Roomx == CurrentRoom[0] && Roomy == CurrentRoom[1]) {
+      System.out.println(Roomx + "Use the new rescue helicopter, HEY! " + Roomy);
+      Teleport();
+    } else {
+      boolean CanGo = Dungeon.goToRoom(Roomx, Roomy);
+      if (CanGo == false) {
+        Teleport();
+      }
+    }
+  }
   static ActiveItem Teleport2 = new ActiveItem("Teleport2.0", 2);
+
+  public static void Teleport2() {
+
+    int allCompleted = 0;
+
+    for (int i = 0; i < Dungeon.CurrentDungeon.length; i++) {
+      for (int j = 0; j < Dungeon.CurrentDungeon[1].length; j++) {
+        if (Dungeon.CurrentDungeon[i][j][0] == 1 ) {
+          allCompleted++;
+          //How many rooms have been completed?
+        }
+      }
+    }
+    
+    if (allCompleted == Dungeon.getRooms()) {
+      //If the max amount of rooms has been visited, to avoid infinite loop, go to I am Error Room
+      Dungeon.ERRORROOM();
+      return;
+    }
+    int Roomx = Dungeon.createCoordinates();
+    int Roomy = Dungeon.createCoordinates();
+    int [] CurrentRoom = Dungeon.getCurrentRoom();
+    if (Roomx == CurrentRoom[0] && Roomy == CurrentRoom[1]) {
+      System.out.println(Roomx + " Use the new rescue helicopter, HEY! " + Roomy);
+      Teleport2();
+    } else if (Dungeon.CurrentDungeon[Roomx][Roomy][0] == 1) {
+      System.out.println("You should see this message, or you ded");
+      Teleport2();
+      //Right now throws an infinite loop. Add an I am Error room?
+    } else {
+      boolean CanGo = Dungeon.goToRoom(Roomx, Roomy);
+      if (CanGo == false) {
+        Teleport2();
+      }
+    }
+  }
+
   static ActiveItem Teleport0 = new ActiveItem("Teleport 0.5", 4);
   static ActiveItem Bomberang = new ActiveItem("Bomberang!", 1);
   static ActiveItem D6 = new ActiveItem("the D6", 6);
+
   //Easier to find provability of whole items array than combining different types of objects in the same array. 
   public static ActiveItem [] ActiveItemArray = {
     Teleport, Teleport2, Bomberang, Teleport0, D6
   };
+  public static void chargeActive () {
+    for (int i = 0; i < ActiveItemArray.length; i++) {
+    
+      if (ActiveItemArray[i].Aquired == true) {
+
+        if (ActiveItemArray[i].collectedCharges >= ActiveItemArray[i].totalCharges) {
+
+          //Don't do anything
+
+        } else {
+
+          ActiveItemArray[i].collectedCharges++;
+
+        }
+
+      }
+
+    }
+
+  }
   public static Collectables [] itemsWithAbilities = {
     //For use with Enemy2's method which checks items with abilities
     TargetPractice, TOXIC

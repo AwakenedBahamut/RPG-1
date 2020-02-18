@@ -5,6 +5,7 @@ Add main menu
 Add plot which will function as the Main
 Add shop
  - have buyable  options
+ - Kind of comleted already
 Add items
  - numbered
  - give stat bonuses
@@ -22,6 +23,7 @@ public class Main
     Menu DOWO = new Menu ("Cool menu name", "Cool menu option");
     System.out.println(DOWO.getName());
     DOWO.displayName();
+    ItemsTable.getItem(ItemsTable.Teleport);
     ActiveItem.Demo();
     Dungeon.DungeonDemo();
     Room OP = new Room(3, 3, 3);

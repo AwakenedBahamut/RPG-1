@@ -51,6 +51,7 @@ public class Enemy2
         break;
       }
   }
+  ItemsTable.chargeActive();
       // give enemy back original stats \\
       // --------------------------------------------------- \\
   System.out.println(EnemyBaseHealth + " = EnemyBase health");
@@ -89,13 +90,14 @@ public class Enemy2
   static void DeBuff() {
     Main.Player.attack -= getAddDmg();
     setAddDmg(0);
+    truePoison = false;
   }
 
   static void checkItems() {
-    if (ItemsTable.itemsWithAbilities[0].collected = true) {
+    if (ItemsTable.itemsWithAbilities[0].collected == true) {
       addDmg += ItemsTable.getHitDamage();
     }
-    if (ItemsTable.itemsWithAbilities[1].collected = true) {
+    if (ItemsTable.itemsWithAbilities[1].collected == true) {
       truePoison = true;
     }
   }
@@ -135,11 +137,16 @@ public static int prompt (Enemy2 Enemy) {
 	else
 	  {
 	    System.out.println ("You didn't get away.");
-	    Main.Player.health -= Enemy.Eattack - Main.Player.defence;
+      int HealthLostNow = Enemy.Eattack -= Main.Player.defence;
+      if (HealthLostNow <= 0) {
+        HealthLostNow = 0;
+      }
+	    Main.Player.health -= HealthLostNow;
 	    if (Main.Player.health <= 0)
       {
 	Win = 2;
 	System.out.println ("You lost.");
+  return Win;
       }
 	    System.out.println ("Your health is " + Main.Player.health);
 	    
@@ -198,9 +205,7 @@ public static int prompt (Enemy2 Enemy) {
       {
 	System.out.println ("You won!");
   int CoinGain = random.nextInt(10) + 20;
-  Items.coins += CoinGain;
-  System.out.println("You gained " + CoinGain + " coins!");
-  System.out.println("You now have " + Items.coins + " coins!");
+  getCoins(CoinGain);
 return 1;
       }
     else if (Main.Player.health <= 0)
@@ -211,6 +216,11 @@ return 2;
 	System.out.println ("Your health is " + Main.Player.health + " / " + Main.Base.health);
 	System.out.println (Enemy.currentName + "`s health is " + Enemy.Ehealth + " / ");
       return 0;
+  }
+  public static void getCoins (int coins) {
+    Items.coins += coins;
+    System.out.println("You gained " + coins + " coins!");
+    System.out.println("You now have " + Items.coins + " coins!");
   }
   public static void RunAway() {
     

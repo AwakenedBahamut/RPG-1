@@ -40,13 +40,12 @@ class Dungeon {
     //Needed?
   }
   public static void DungeonDemo() {
-    createRooms(25);
+    createRooms(2);
     while (true) {
     //Main.Clear();
     //Clear each time you print map?
     Room.ShowMap();
     navigateDungeon();
-    System.out.println("Check");
     }
 
   }
@@ -79,10 +78,15 @@ class Dungeon {
       break;
 
       case "/tp":
-      CanGo = goToRoom(createCoordinates(), createCoordinates());
+        ItemsTable.Teleport2();
       break;
 
       case "i":
+      ActiveItem.show();
+      break;
+
+      case "^":
+      System.out.println("");
       break;
       
       default:
@@ -102,6 +106,8 @@ class Dungeon {
 //Don't repeat room start
     } else {
       switch (CurrentDungeon[CR[0]][CR[1]][2]) {
+        case 0:
+        break;
         case 1:
         EnemyEncounter.Encounter();
         CurrentDungeon[CR[0]][CR[1]][0] = 1;
@@ -114,10 +120,61 @@ class Dungeon {
         //Make the following number 0 for infinite items
         CurrentDungeon[CR[0]][CR[1]][0] = 1;
         break;
+        case 4:
+        CurrentDungeon[CR[0]][CR[1]][0] = 1;
+        break;
+        case 5:
+        CurrentDungeon[CR[0]][CR[1]][0] = 1;
+        break;
         default:
-
+        System.out.println("I am error");
+        ERRORROOM();
       }
     }
+  }
+  static void ERRORROOM() {
+    Random random = new Random();
+    System.out.println("ERROR");
+    switch(random.nextInt(5)) {
+      case 0:
+        ItemsTable.getRandomItem();
+      break;
+      case 1:
+        Enemy2.Battle(EnemyTable.MissingYes);
+        ItemsTable.getRandomItem();
+      break;
+      case 2:
+        Enemy2.getCoins(100);
+      break;
+      case 3:
+        Enemy2.Battle(EnemyTable.Dip);
+      break;
+      case 4:
+        System.out.println("      Tip ");
+        System.out.println("_______________");
+        System.out.println(gameTips[random.nextInt(gameTips.length)]);
+      break;
+      default:
+      break;
+    }
+  }
+  static String [] gameTips = {
+    "\t Don't \n \t Die",
+    "\t Don't \n \t Resist",
+    "\t You aren't \n \t Ready",
+    "\t Stop while \n \t you're ahead", 
+    "https://cdn.kastatic.org/ka-perseus-images/6c2337f907c1b3550e98911f1e55ec1875c1d68b.png"
+  };
+  public static int getRooms() {
+    int returnRooms = 0;
+    for (int i = 0; i < CurrentDungeon.length; i++) {
+      for (int j = 0; j < CurrentDungeon[1].length; j++) {
+        if (CurrentDungeon[i][j][2] > 0) {
+          returnRooms++;
+        }
+      }
+    }
+    return returnRooms;
   }
   public static boolean goToRoom(int x, int y) {
     //Will return false if the room is not on the map

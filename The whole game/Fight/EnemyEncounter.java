@@ -12,7 +12,7 @@ class EnemyEncounter {
     {EnemyTable.Dip, EnemyTable.Dip},
     {EnemyTable.Boi, EnemyTable.Dip},
     {EnemyTable.Fly, EnemyTable.Fly, EnemyTable.Fly} ,
-    {EnemyTable.Tank}
+    {EnemyTable.Tank}, 
   };
   
 }
